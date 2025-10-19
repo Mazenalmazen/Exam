@@ -5,8 +5,8 @@ var isHereExamLoaded;
 var countPDF = 0;
 var admob_mode;
 var no_no = '"no"';
-var kind_me;
-var num_device = 'uuid: 123456'; // Generic identifier for web environment
+var kind_me = 'webview';
+var num_device = 'uuid: 123456'; 
 
 function send_saved_direct() { localStorage_tafaseel_Student_Data = localStorage['tafaseel_Student_Data'];
     localStorage_number_exam = localStorage['number_exam'];
@@ -14,14 +14,12 @@ function send_saved_direct() { localStorage_tafaseel_Student_Data = localStorage
         go_page('prev_exam');
         send_ans(localStorage['tafaseel_Student_Data'], localStorage['number_exam'], localStorage['exam_data_for_std']) } } setTimeout(function() { send_saved_direct() }, 3500);
 
-// IndexedDB initialization (retained as it's a web API, with generic fallback for support)
 window['indexedDB'] = window['indexedDB'] || window['mozIndexedDB'] || window['webkitIndexedDB'] || window['msIndexedDB'] || window['shimIndexedDB'];
 window['IDBTransaction'] = window['IDBTransaction'] || window['webkitIDBTransaction'] || window['msIDBTransaction'];
 window['IDBKeyRange'] = window['IDBKeyRange'] || window['webkitIDBKeyRange'] || window['msIDBKeyRange'];
 device_not_support_indexedDB = 'support';
 
 if (!window['indexedDB']) { 
-    // Simplified error handling if browser lacks IndexedDB, treats as unsupported.
     device_not_support_indexedDB = 'device_not_support_indexedDB';
 } else { 
     var db; 
@@ -38,16 +36,23 @@ if (!window['indexedDB']) {
     } 
 };
 
-function alertDismissed() {} // Keep placeholder function
+// محاولة الحصول على المعرف عبر واجهة JSI إذا كانت متوفرة
+try {
+    if (typeof AndroidInterface !== 'undefined' && AndroidInterface.getDeviceId) {
+        num_device = 'uuid: ' + AndroidInterface.getDeviceId();
+    }
+} catch (e) {
+    console.log("JSI interface not fully available or device ID not retrieved.");
+}
+
+
+function alertDismissed() {} 
 setTimeout(function() { readAll_exam_saveded_new() }, 1000);
 setTimeout(function() { readAll_ans_saveded() }, 3000);
-
-// Removed Cordova device ready event listener (onDeviceReady4)
 setTimeout(function() { readAll_ans_saveded_new() }, 500);
 
 
 function downloadExam_new() { if (myObj['kind_download'] == 'indexedDB') { if (device_not_support_indexedDB == 'device_not_support_indexedDB') { if (myObj['kind_download'] == 'indexedDB') { 
-    // Replaced Cordova alert with Swal.fire
     Swal.fire({type: 'info', title: lan_word_please, html: lan_msg_non_support, confirmButtonText: lan_ok});
     } } else { downloadExam() } } else { $('#exam_loaded_forAdd')['empty']();
         exam_data = JSON['stringify'](myObj);
@@ -111,14 +116,27 @@ function remove_exam(_0x9f58x22) { if (device_not_support_indexedDB != 'device_n
 var fast_lan;
 var chaneg_lan;
 
-function check_mode_app_lan(_0x9f58x26) { if (_0x9f58x26 == undefined || _0x9f58x26 == 'undefined' || _0x9f58x26 == 'no') { $('.start_mode_app_lan')['show']();
-        fast_lan = 'new';
-        setTimeout(function() { lan_run() }, 2000) } else { foo_app_lan_ar(); if (fast_lan != 'new') { setTimeout(function() { lan_run() }, 2000) } else { location['reload']() };
-        check_mode(mode_te_st) }; if (chaneg_lan == 'yes') { location['reload']() } }
-
-function chaneg_check_mode_app_lan(_0x9f58x28) { app_lan = localStorage['app_lan'] = _0x9f58x28;
-    $('.start_mode_app_lan')['fadeOut']();
-    check_mode_app_lan(app_lan) } check_mode_app_lan(app_lan);
+function check_mode_app_lan(_0x9f58x26) { 
+    // التعديل: إذا لم يتم تحديد اللغة بعد (app_lan == 'no')، يتم فرض العربية وتخطي شاشة اختيار اللغة
+    if (_0x9f58x26 == undefined || _0x9f58x26 == 'undefined' || _0x9f58x26 == 'no') { 
+        app_lan = localStorage['app_lan'] = 'ar'; // فرض العربية
+        foo_app_lan_ar();
+        $('.start_mode_app_lan')['hide'](); // إخفاء شاشة اختيار اللغة
+        check_mode(mode_te_st); // الانتقال مباشرة إلى شاشة اختيار الدور
+    } else { 
+        foo_app_lan_ar(); 
+        if (fast_lan != 'new') { 
+            setTimeout(function() { lan_run() }, 2000) 
+        } else { 
+            location['reload']() 
+        };
+        check_mode(mode_te_st);
+    } 
+    if (chaneg_lan == 'yes') { 
+        location['reload']() 
+    } 
+}
+check_mode_app_lan(app_lan);
 
 function check_mode(mode_te_st) { if (mode_te_st == 'teacher') { $('.teacher')['show']();
         $('.student')['hide']() } else { if (mode_te_st == 'student') { $('.teacher')['hide']();
@@ -138,7 +156,6 @@ var networkState;
 forNotReplay_qed = 0;
 forNotReplay_send = 0;
 
-// Use standard window event listeners instead of Cordova's
 window.addEventListener('offline', onOffline, false);
 window.addEventListener('online', onOnline, false);
 
@@ -172,7 +189,8 @@ if (localStorage['router'] == 'prev_exam') { go_page('prev_exam') } else { if (l
 
 function reset_App_tbl() { if (device_not_support_indexedDB == 'support') { readAll_ans_saveded() } } setTimeout(function() {}, 4000);
 
-function reset_App() { $('#mwb_list')['empty']();
+function reset_App() { 
+    $('#mwb_list')['empty']();
     $('#form_new_ask')['empty']();
     $('#t_name')['val']('');
     $('#t_info')['val']('');
@@ -228,13 +246,17 @@ function reset_App() { $('#mwb_list')['empty']();
     $('.page_mytest')['css']('margin-top', '0px');
     $('hr')['css']('display', 'block');
     count_ask = 0;
-    add_ask() } 
-
-setTimeout(function() { /* Removed window.plugins.insomnia.allowSleepAgain() */ }, 2000);
+    add_ask();
+    
+    try {
+        if (typeof AndroidInterface !== 'undefined' && AndroidInterface.keepScreenOn) {
+            AndroidInterface.keepScreenOn(false);
+        }
+    } catch(e) {}
+} 
 
 getFromHash = 'no';
 function handleOpenURL(_0x9f58x44) {
-    // Basic URL hash parsing for web environment
     try {
         var hash = _0x9f58x44.substring(_0x9f58x44.indexOf('#') + 1);
         if (hash) {
@@ -246,7 +268,3 @@ function handleOpenURL(_0x9f58x44) {
         console.error("Error handling URL hash:", e);
     }
 }
-// Removed Cordova update check (ver and ajax for Add_Add.php) and platform-specific exit button addition.
-// Removed AdMob related functions (initAd, show_AdMob) and variables (publisherId_ios_android).
-// Removed ScreenShot prevention listener (OurCodeWorldpreventscreenshots).
-
