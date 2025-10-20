@@ -2,7 +2,7 @@ var num_device;
 var isHereAns;
 var state_exam;
 var kind_download_for_start_exam;
-var TimeFinish = 'ok'; // تم إضافة هذا التعريف لتجنب خطأ "is not defined"
+var TimeFinish = 'ok'; 
 
 scriptPopup_st = '<script>$(\'#ans_saved_forAdd .fa-caret-square-down\').click(function (){	$(this).siblings().fadeIn(200);}); $(\'.popup_st\').click(function (){	$(\'.popup_st\').fadeOut(200);}); $(\'.popup_st .inner\').click(function (e){	e.stopPropagation()}); $(\'.popup_st button\').click(function(){$(\'.popup_st\').fadeOut(200); $(\'.popup_st .inner\').click(function (e){e.stopPropagation()});}); </' + 'script>';
 scriptPopup_te = '<script>$(\'#exam_saved_forAdd .fa-caret-square-down\').click(function (){	$(this).siblings().fadeIn(200);}); $(\'.popup_te\').click(function (){	$(\'.popup_te\').fadeOut(200);}); $(\'.popup_te .inner\').click(function (e){	e.stopPropagation()}); $(\'.popup_te button\').click(function(){$(\'.popup_te\').fadeOut(200); $(\'.popup_te .inner\').click(function (e){e.stopPropagation()});}); </' + 'script>';
@@ -12,33 +12,69 @@ forNotReplay_ans_send = 0;
 function showMsg_showDegree() { Swal['fire']({ html: lan_not_see_degree, confirmButtonText: lan_ok }) }
 
 function readAll_ans_saveded_new() {
-    // Removed Cordova device ID check and relied on server interaction if not a local environment
     num_device = 'uuid: 123456';
+    // محاولة الحصول على المعرف عبر واجهة JSI إذا كانت متوفرة في بيئة WebView
+    try {
+        if (typeof AndroidInterface !== 'undefined' && AndroidInterface.getDeviceId) {
+            num_device = 'uuid: ' + AndroidInterface.getDeviceId();
+        }
+    } catch (e) {
+        num_device = 'uuid: 123456';
+    }
+    
     $('#ans_saved_forAdd')['empty']();
     $('#ans_saved_forAdd')['append']('<tr id="tr_load"><td colspan="3"><img id="load_login" style="display: block;" src="img/load.gif" /></td></tr>');
-    $['ajax']({ type: 'POST', url: 'https://app-exams.com/new_exam/get_result_exam_one_std.php', data: { num_device: num_device + '' }, success: function(_0x29bex7) { if (_0x29bex7 == '') { $('#ans_saved_forAdd')['empty']();
+    $['ajax']({ type: 'POST', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/get_result_exam_one_std.php', data: { num_device: num_device + '' }, success: function(_0x29bex7) { if (_0x29bex7 == '') { $('#ans_saved_forAdd')['empty']();
                 $('#ans_saved_forAdd')['append']('<tr><td id="lan_No_exam_yet_std" colspan="3">لم تقم بدخول أي اختبار حتى الآن</td></tr>');
                 $('#lan_No_exam_yet_std')['html'](lan_No_exam_yet_std) } else { $('#ans_saved_forAdd')['empty']();
                 $('#ans_saved_forAdd')['append'](_0x29bex7);
                 $('#ans_saved_forAdd')['append'](scriptPopup_st) } }, error: function() { $('#ans_saved_forAdd')['empty']();
             $('#ans_saved_forAdd')['append']('<tr><td colspan="3"><i class="fas fa-exclamation-triangle"></i> <i class="fas fa-wifi"></i></td></tr>') } }) }
 
-function readAll_ans_saveded() { if (device_not_support_indexedDB == 'support') { var _0x29bex9 = db['transaction']('myans')['objectStore']('myans');
-        _0x29bex9['openCursor']()['onsuccess'] = function(_0x29bexa) { var _0x29bexb = _0x29bexa['target']['result']; if (_0x29bexb) { xz = _0x29bexb['value'];
+function readAll_ans_saveded() { 
+    if (device_not_support_indexedDB == 'support') { 
+        var _0x29bex9 = db['transaction']('myans')['objectStore']('myans');
+        _0x29bex9['openCursor']()['onsuccess'] = function(_0x29bexa) { 
+            var _0x29bexb = _0x29bexa['target']['result']; 
+            if (_0x29bexb) { 
+                xz = _0x29bexb['value'];
                 cursorValueExam_data = '"' + _0x29bexb['value']['exam_data'] + '"';
                 cursorValueTafaseel_Student_Data = '"' + _0x29bexb['value']['tafaseel_Student_Data'] + '"';
                 obj_ans = JSON['parse'](_0x29bexb['value']['tafaseel_Student_Data']);
-                obj_ans_te = JSON['parse'](_0x29bexb['value']['exam_data']); if (obj_ans['send_ans'] == 'no' && networkState == 0) { $('#exam_saved_st table thead td:first')['html']('<p onclick="send_ans(localStorage_tafaseel_Student_Data, localStorage_number_exam, localStorage_exam_data_for_std)" style="float: right; margin-right: 5px; margin-left: -70px; font-size: 14px; margin-top: 2px; margin-bottom: 0px;">' + lan_SendExam_tbl_std + '</p><span>' + lan_My_Exams_For_Student + '</span>');
+                obj_ans_te = JSON['parse'](_0x29bexb['value']['exam_data']); 
+                
+                if (obj_ans['send_ans'] == 'no' && networkState == 0) { 
+                    $('#exam_saved_st table thead td:first')['html']('<p style="float: right; margin-right: 5px; margin-left: -70px; font-size: 14px; margin-top: 2px; margin-bottom: 0px;">' + lan_SendExam_tbl_std + '</p><span>' + lan_My_Exams_For_Student + '</span>');
                     cursor_value_tafaseel_Student_Data = _0x29bexb['value']['tafaseel_Student_Data'];
                     cursor_key = _0x29bexb['key'];
                     cursor_value_exam_data = _0x29bexb['value']['exam_data'];
                     $('body')['append']('<script> var _0xe004=["html","#exam_saved_st table thead td:first","click","#exam_saved_st table thead td:first p:first"];$(_0xe004[3])[_0xe004[2]](function(){$(_0xe004[1])[_0xe004[0]](lan_My_Exams_For_Student);send_ans(cursor_value_tafaseel_Student_Data,cursor_key,cursor_value_exam_data)})</' + 'script>');
                     go_page('prev_exam');
-                    $('html,body')['animate']({ scrollTop: $('#exam_saved_st table thead td:first')['offset']()['top'] }, 'slow'); if (forNotReplay_ans_qed == 0) { forNotReplay_ans_qed++;
-                        Swal['fire']({ html: lan_connect_Internet_to_send, confirmButtonText: lan_ok }) } else { setTimeout(function() { forNotReplay_ans_qed = 0 }, 2000) } } else { if (obj_ans['send_ans'] == 'no' && networkState == 1) { if (forNotReplay_ans_send == 0) { forNotReplay_ans_send++;
-                            send_ans(_0x29bexb['value']['tafaseel_Student_Data'], _0x29bexb['key'], _0x29bexb['value']['exam_data']) } else { setTimeout(function() { forNotReplay_ans_send = 0 }, 2000) };
-                        $('#ans_saved_forAdd')['append'](scriptPopup_st) } else { $('#exam_saved_st table thead td:first')['html']('<p style="float: right; margin-right: 5px; margin-left: -70px; font-size: 14px; margin-top: 2px; margin-bottom: 0px;" onclick="readAll_ans_saveded_new(); readAll_ans_saveded()">' + lan_update + '</p><span>' + lan_My_Exams_For_Student + '</span>') } };
-                _0x29bexb['continue']() } } } }
+                    $('html,body')['animate']({ scrollTop: $('#exam_saved_st table thead td:first')['offset']()['top'] }, 'slow'); 
+                    if (forNotReplay_ans_qed == 0) { 
+                        forNotReplay_ans_qed++;
+                        Swal['fire']({ html: lan_connect_Internet_to_send, confirmButtonText: lan_ok }) 
+                    } else { 
+                        setTimeout(function() { forNotReplay_ans_qed = 0 }, 2000) 
+                    } 
+                } else { 
+                    if (obj_ans['send_ans'] == 'no' && networkState == 1) { 
+                        if (forNotReplay_ans_send == 0) { 
+                            forNotReplay_ans_send++;
+                            send_ans(_0x29bexb['value']['tafaseel_Student_Data'], _0x29bexb['key'], _0x29bexb['value']['exam_data']) 
+                        } else { 
+                            setTimeout(function() { forNotReplay_ans_send = 0 }, 2000) 
+                        };
+                        $('#ans_saved_forAdd')['append'](scriptPopup_st) 
+                    } else { 
+                        $('#exam_saved_st table thead td:first')['html']('<p style="float: right; margin-right: 5px; margin-left: -70px; font-size: 14px; margin-top: 2px; margin-bottom: 0px;" onclick="readAll_ans_saveded_new(); readAll_ans_saveded()">' + lan_update + '</p><span>' + lan_My_Exams_For_Student + '</span>') 
+                    } 
+                };
+                _0x29bexb['continue']() 
+            } 
+        } 
+    } 
+}
 
 function start_exam(_0x29bexd, _0x29bexe, _0x29bexf, _0x29bex10, kind_download_for_start_exam) { _0x29bexe = JSON['stringify'](_0x29bexe);
     _0x29bexe = _0x29bexe['replace'](/`/g, '\'');
@@ -93,7 +129,6 @@ function check_pass_start() {
                 if (!value) {
                     return lan_fill_input;
                 }
-                // Check if input matches password (string or parsed Arabic number)
                 if (value == obj['t_pass_start'] || String(parseArabic(obj['t_pass_start'])) == value || String(parseArabic(value)) == obj['t_pass_start']) {
                     return false; 
                 } else {
@@ -129,6 +164,12 @@ function go_exam() {
     } else {
         nav_bottomm = 'show'
     };
+
+    try {
+        if (typeof AndroidInterface !== 'undefined' && AndroidInterface.keepScreenOn) {
+            AndroidInterface.keepScreenOn(true); 
+        }
+    } catch(e) {}
 
     if (kind_show != 'demo' && kind_show != 'pdf') {
         admob_mode = 'hide';
@@ -170,7 +211,7 @@ function go_exam() {
 }
 
 function go_exam1() { count_ask_for_start = count_ask_for_start + 1;
-    choice_kind = '<div class=\'AskRandom\' style=\'display:none; padding: 10px;\'><table width =\'98%\' id=\'group' + count_ask_for_start + '\'><tr class=\'Dnone\'><td colspan=\'2\'><img src=\'\' style=\'max-width:100%; margin:auto\' id=\'imgAsk' + count_ask_for_start + '\'></td></tr><tr><td colspan=\'2\'><div  id=\'showask' + count_ask_for_start + '\'></div></td></tr><tr class=\'ch1_' + count_ask_for_start + '\'><td class=\'right1\'><input type=\'radio\' id=\'a1q' + count_ask_for_start + '\' value=\'0\' name=\'radio' + count_ask_for_start + '\' onClick=\'checked_choice_q' + count_ask_for_start + '=1\'></td>  <td><div  class=\'left22\' id=\'showask' + count_ask_for_start + 'A\'></div></td></tr><tr class=\'ch2_' + count_ask_for_start + '\'><td class=\'right1\'><input type=\'radio\' id=\'a2q' + count_ask_for_start + '\' value=\'0\' name=\'radio' + count_ask_for_start + '\' onChange=\'checked_choice_q' + count_ask_for_start + '=2\'></td>  <td><div  class=\'left22\' id=\'showask' + count_ask_for_start + 'B\'></div></td></tr><tr class=\'ch3_' + count_ask_for_start + '\'><td class=\'right1\'><input type=\'radio\' id=\'a3q' + count_ask_for_start + '\' value=\'0\' name=\'radio' + count_ask_for_start + '\' onChange=\'checked_choice_q' + count_ask_for_start + '=3\'></td>  <td><div  class=\'left22\' id=\'showask' + count_ask_for_start + 'C\'></div></td></tr><tr class=\'ch4_' + count_ask_for_start + '\'><td class=\'right1\'><input type=\'radio\' id=\'a4q' + count_ask_for_start + '\' value=\'0\' name=\'radio' + count_ask_for_start + '\' onChange=\'checked_choice_q' + count_ask_for_start + '=4\'></td>  <td><div  class=\'left22\' id=\'showask' + count_ask_for_start + 'D\'></div></td></tr><tr class=\'ch5_' + count_ask_for_start + '\'><td class=\'right1\'><input type=\'radio\' id=\'a5q' + count_ask_for_start + '\' value=\'0\' name=\'radio' + count_ask_for_start + '\' onChange=\'checked_choice_q' + count_ask_for_start + '=5\'></td>  <td><div  class=\'left22\' id=\'showask' + count_ask_for_start + 'E\'></div></td></tr></table><script> checked_choice_q' + count_ask_for_start + '= 0; $(\'#showask' + count_ask_for_start + '\').html(obj.ask_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'A\').html(obj.choice1_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'B\').html(obj.choice2_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'C\').html(obj.choice3_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'D\').html(obj.choice4_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'E\').html(obj.choice5_' + count_ask_for_start + '); ccc1_' + count_ask_for_start + '();function ccc1_' + count_ask_for_start + '(){ if (obj.choice1_' + count_ask_for_start + ' == \'\'){$(\'.ch1_' + count_ask_for_start + '\').css(\'display\', \'none\');} } ccc2_' + count_ask_for_start + '();function ccc2_' + count_ask_for_start + '(){ if (obj.choice2_' + count_ask_for_start + ' == \'\'){$(\'.ch2_' + count_ask_for_start + '\').css(\'display\', \'none\');} } ccc3_' + count_ask_for_start + '();function ccc3_' + count_ask_for_start + '(){ if (obj.choice3_' + count_ask_for_start + ' == \'\'){$(\'.ch3_' + count_ask_for_start + '\').css(\'display\', \'none\');} } ccc4_' + count_ask_for_start + '();function ccc4_' + count_ask_for_start + '(){ if (obj.choice4_' + count_ask_for_start + ' == \'\'){$(\'.ch4_' + count_ask_for_start + '\').css(\'display\', \'none\');} } ccc5_' + count_ask_for_start + '();function ccc5_' + count_ask_for_start + '(){ if (obj.choice5_' + count_ask_for_start + ' == \'\'){$(\'.ch5_' + count_ask_for_start + '\').css(\'display\', \'none\');} } group' + count_ask_for_start + '=\'choice\';</' + 'script></div>';
+    choice_kind = '<div class=\'AskRandom\' style=\'display:none; padding: 10px;\'><table width =\'98%\' id=\'group' + count_ask_for_start + '\'><tr class=\'Dnone\'><td colspan=\'2\'><img src=\'\' style=\'max-width:100%; margin:auto\' id=\'imgAsk' + count_ask_for_start + '\'></td></tr><tr><td colspan=\'2\'><div  id=\'showask' + count_ask_for_start + '\'></div></td></tr><tr class=\'ch1_' + count_ask_for_start + '\'><td class=\'right1\'><input type=\'radio\' id=\'a1q' + count_ask_for_start + '\' value=\'0\' name=\'radio' + count_ask_for_start + '\' onClick=\'checked_choice_q' + count_ask_for_start + '=1\'></td>  <td><div  class=\'left22\' id=\'showask' + count_ask_for_start + 'A\'></div></td></tr><tr class=\'ch2_' + count_ask_for_start + '\'><td class=\'right1\'><input type=\'radio\' id=\'a2q' + count_ask_for_start + '\' value=\'0\' name=\'radio' + count_ask_for_start + '\' onChange=\'checked_choice_q' + count_ask_for_start + '=2\'></td>  <td><div  class=\'left22\' id=\'showask' + count_ask_for_start + 'B\'></div></td></tr><tr class=\'ch3_' + count_for_start + '\'><td class=\'right1\'><input type=\'radio\' id=\'a3q' + count_ask_for_start + '\' value=\'0\' name=\'radio' + count_ask_for_start + '\' onChange=\'checked_choice_q' + count_ask_for_start + '=3\'></td>  <td><div  class=\'left22\' id=\'showask' + count_ask_for_start + 'C\'></div></td></tr><tr class=\'ch4_' + count_ask_for_start + '\'><td class=\'right1\'><input type=\'radio\' id=\'a4q' + count_ask_for_start + '\' value=\'0\' name=\'radio' + count_ask_for_start + '\' onChange=\'checked_choice_q' + count_ask_for_start + '=4\'></td>  <td><div  class=\'left22\' id=\'showask' + count_ask_for_start + 'D\'></div></td></tr><tr class=\'ch5_' + count_ask_for_start + '\'><td class=\'right1\'><input type=\'radio\' id=\'a5q' + count_ask_for_start + '\' value=\'0\' name=\'radio' + count_ask_for_start + '\' onChange=\'checked_choice_q' + count_ask_for_start + '=5\'></td>  <td><div  class=\'left22\' id=\'showask' + count_ask_for_start + 'E\'></div></td></tr></table><script> checked_choice_q' + count_ask_for_start + '= 0; $(\'#showask' + count_ask_for_start + '\').html(obj.ask_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'A\').html(obj.choice1_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'B\').html(obj.choice2_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'C\').html(obj.choice3_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'D\').html(obj.choice4_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'E\').html(obj.choice5_' + count_ask_for_start + '); ccc1_' + count_ask_for_start + '();function ccc1_' + count_ask_for_start + '(){ if (obj.choice1_' + count_ask_for_start + ' == \'\'){$(\'.ch1_' + count_ask_for_start + '\').css(\'display\', \'none\');} } ccc2_' + count_ask_for_start + '();function ccc2_' + count_ask_for_start + '(){ if (obj.choice2_' + count_ask_for_start + ' == \'\'){$(\'.ch2_' + count_ask_for_start + '\').css(\'display\', \'none\')} } ccc3_' + count_ask_for_start + '();function ccc3_' + count_ask_for_start + '(){ if (obj.choice3_' + count_ask_for_start + ' == \'\'){$(\'.ch3_' + count_ask_for_start + '\').css(\'display\', \'none\')} }ccc4_' + count_ask_for_start + '();function ccc4_' + count_ask_for_start + '(){ if (obj.choice4_' + count_ask_for_start + ' == \'\'){$(\'.ch4_' + count_ask_for_start + '\').css(\'display\', \'none\')} } ccc5_' + count_ask_for_start + '();function ccc5_' + count_ask_for_start + '(){ if (obj.choice5_' + count_ask_for_start + ' == \'\'){$(\'.ch5_' + count_ask_for_start + '\').css(\'display\', \'none\')} } group' + count_ask_for_start + '=\'choice\';</' + 'script></div>';
     box_kind = '<div class=\'AskRandom\' style=\'display:none; padding: 10px;\'><table width =\'98%\' id=\'group' + count_ask_for_start + '\'><tr class=\'Dnone\'><td colspan=\'2\'><img src=\'\' style=\'max-width:100%; margin:auto\' id=\'imgAsk' + count_ask_for_start + '\'></td></tr><tr><td colspan=\'2\'><div  id=\'showask' + count_ask_for_start + '\'></div></td><tr class=\'ch1_' + count_ask_for_start + '\'><td class=\'right1\'><input class=\'checkbox' + count_ask_for_start + '\' type=\'checkbox\' id=\'Ba1q' + count_ask_for_start + '\' onChange=\'if (this.checked == true){checked_BOX_1q' + count_ask_for_start + ' = ' + true1 + '}else{checked_BOX_1q' + count_ask_for_start + ' = ' + false1 + '}\'></td><td><div id=\'showask' + count_ask_for_start + 'A\' class=\'left22\'></div></td></tr><tr class=\'ch2_' + count_ask_for_start + '\'><td class=\'right1\'><input class=\'checkbox' + count_ask_for_start + '\' type=\'checkbox\' id=\'Ba2q' + count_ask_for_start + '\' onChange=\'if (this.checked == true){checked_BOX_2q' + count_ask_for_start + ' = ' + true1 + '}else{checked_BOX_2q' + count_ask_for_start + ' = ' + false1 + '}\'></td><td><div id=\'showask' + count_ask_for_start + 'B\' class=\'left22\'></div></td></tr><tr class=\'ch3_' + count_ask_for_start + '\'><td class=\'right1\'><input class=\'checkbox' + count_ask_for_start + '\' type=\'checkbox\' id=\'Ba3q' + count_ask_for_start + '\' onChange=\'if (this.checked == true){checked_BOX_3q' + count_ask_for_start + ' = ' + true1 + '}else{checked_BOX_3q' + count_ask_for_start + ' = ' + false1 + '}\'></td><td><div id=\'showask' + count_ask_for_start + 'C\' class=\'left22\'></div></td></tr><tr class=\'ch4_' + count_ask_for_start + '\'><td class=\'right1\'><input class=\'checkbox' + count_ask_for_start + '\' type=\'checkbox\' id=\'Ba4q' + count_ask_for_start + '\' onChange=\'if (this.checked == true){checked_BOX_4q' + count_ask_for_start + ' = ' + true1 + '}else{checked_BOX_4q' + count_ask_for_start + ' = ' + false1 + '}\'></td><td><div id=\'showask' + count_ask_for_start + 'D\' class=\'left22\'></div></td></tr><tr class=\'ch5_' + count_ask_for_start + '\'><td class=\'right1\'><input class=\'checkbox' + count_ask_for_start + '\' type=\'checkbox\' id=\'Ba5q' + count_ask_for_start + '\' onChange=\'if (this.checked == true){checked_BOX_5q' + count_ask_for_start + ' = ' + true1 + '}else{checked_BOX_5q' + count_ask_for_start + ' = ' + false1 + '}\'></td><td><div id=\'showask' + count_ask_for_start + 'E\' class=\'left22\'></div></td></tr></table><script> checked_BOX_1q' + count_ask_for_start + '= ' + false1 + '; checked_BOX_2q' + count_ask_for_start + '= ' + false1 + '; checked_BOX_3q' + count_ask_for_start + '= ' + false1 + '; checked_BOX_4q' + count_ask_for_start + '= ' + false1 + '; checked_BOX_5q' + count_ask_for_start + '= ' + false1 + '; $(\'#showask' + count_ask_for_start + '\').html(obj.ask_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'A\').html(obj.choice1_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'B\').html(obj.choice2_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'C\').html(obj.choice3_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'D\').html(obj.choice4_' + count_ask_for_start + ');$(\'#showask' + count_ask_for_start + 'E\').html(obj.choice5_' + count_ask_for_start + ');ccc1_' + count_ask_for_start + '();function ccc1_' + count_ask_for_start + '(){ if (obj.choice1_' + count_ask_for_start + ' == \'\'){$(\'.ch1_' + count_ask_for_start + '\').css(\'display\', \'none\')} }ccc2_' + count_ask_for_start + '();function ccc2_' + count_ask_for_start + '(){ if (obj.choice2_' + count_ask_for_start + ' == \'\'){$(\'.ch2_' + count_ask_for_start + '\').css(\'display\', \'none\')} }ccc3_' + count_ask_for_start + '();function ccc3_' + count_ask_for_start + '(){ if (obj.choice3_' + count_ask_for_start + ' == \'\'){$(\'.ch3_' + count_ask_for_start + '\').css(\'display\', \'none\')} }ccc4_' + count_ask_for_start + '();function ccc4_' + count_ask_for_start + '(){ if (obj.choice4_' + count_ask_for_start + ' == \'\'){$(\'.ch4_' + count_ask_for_start + '\').css(\'display\', \'none\')} }ccc5_' + count_ask_for_start + '();function ccc5_' + count_ask_for_start + '(){ if (obj.choice5_' + count_ask_for_start + ' == \'\'){$(\'.ch5_' + count_ask_for_start + '\').css(\'display\', \'none\')} } group' + count_ask_for_start + '=\'box\'; </' + 'script></div>';
     mqali_kind = '<div class=\'AskRandom\' style=\'display:none\'; padding: 10px;><table width =\'98%\' id=\'group' + count_ask_for_start + '\'><tr class=\'Dnone\'><td colspan=\'2\'><img src=\'\' style=\'max-width:100%; margin:auto\' id=\'imgAsk' + count_ask_for_start + '\'></td></tr><tr><td colspan=\'2\'><div  id=\'showask' + count_ask_for_start + '\'></div></td><tr class=\'mq1\'><td colspan=\'2\'><textarea style=\'border:1px solid #835003; background-color: #fff; border-radius: 6px; padding:7px 5px; width: 95%\' rows=\'4\' id = \'anser' + count_ask_for_start + '\' type= \'text\' placeholder=\'' + lan_enter_ans_mqali + '\' ></textarea></td></tr></table><script>$(\'#showask' + count_ask_for_start + '\').html(obj.ask_' + count_ask_for_start + '); group' + count_ask_for_start + '=\'mqali\'; </' + 'script></div>';
     fun_start = '<script>go_exam2(); function go_exam2(){	if (count_ask_for_start <= obj.count_ask){		if (obj.kindQ' + count_ask_for_start + ' == \'choice\'){			data_start_exam = choice_kind;			go_examForAddLoop();		count_ask_for_start = count_ask_for_start + 1;		} else if (obj.kindQ' + count_ask_for_start + ' == \'box\'){			data_start_exam = box_kind;			go_examForAddLoop();			count_ask_for_start = count_ask_for_start + 1;		} else {			data_start_exam = mqali_kind;			go_examForAddLoop();			count_ask_for_start = count_ask_for_start + 1;		}	} else {go_examRandom();}}</' + 'script>';
@@ -191,7 +232,7 @@ function go_examRandom() { if (obj['RandomAsk'] == 'true1' && kind_show != 'demo
                 _0x29bex27['eq'](_0x29bex29)['before'](_0x29bex27['eq'](_0x29bex2a)) };
             get_blob_put() } else { get_blob_put() } } else { get_blob_put() } }
 
-function get_blob_put() { if (kind_show == 'pdf' || kind_show == 'demo' || kind_download_for_start_exam == '"direct"') { var _0x29bex2c; for (_0x29bex2c = 0; _0x29bex2c <= obj['count_ask']; _0x29bex2c++) { put_img_srcc = '<script> if (obj.img_val_ASK' + _0x29bex2c + ' != \'\') { $(\'#imgAsk' + _0x29bex2c + '\').parent().parent().css(\'display\',\'contents\'); $(\'#imgAsk' + _0x29bex2c + '\').attr(\'src\',obj.img_val_ASK' + _0x29bex2c + ')}; </' + 'script>';
+function get_blob_put() { if (kind_show == 'pdf' || kind_show == 'demo' || kind_download_for_start_exam == '"direct"') { var _0x29bex2c; for (_0x29bex2c = 0; _0x29bex2c <= obj['count_ask']; _0x29bex2c++) { put_img_srcc = '<script> if (obj.img_val_ASK' + _0x29bex2c + ' != \'\') { $(\'#imgAsk' + _0x29bex2c + '\').parent().parent().css(\'display\',\'contents\'); $(\'#imgAsk' + count_ask_for_end + '\').attr(\'src\',obj.img_val_ASK' + _0x29bex2c + ')}; </' + 'script>'; // تم تعديل imgAsk
             $('#add_ask_here')['append'](put_img_srcc); if (_0x29bex2c == obj['count_ask']) { go_examBank() } } } else { count_blob_for_put = count_blob_for_put + 1;
         scr_blob = '<script> if (obj.img_val_ASK' + count_blob_for_put + ' != \'\') { var transaction = db.transaction([\'blobs\']); var objectStore = transaction.objectStore(\'blobs\'); var request = objectStore.get(obj.t_num); request.onsuccess = function(event) { if(request.result) { $(\'#imgAsk' + count_blob_for_put + '\').parent().parent().css(\'display\',\'contents\'); imgFile = request.result.blob.img_ASK' + count_blob_for_put + '; imgURL = window.URL.createObjectURL(imgFile); $(\'#imgAsk' + count_blob_for_put + '\').attr(\'src\',imgURL); get_blob_put_loop(); } } } else {get_blob_put_loop();}</' + 'script>';
         $('#add_ask_here')['append'](scr_blob) } }
@@ -226,53 +267,97 @@ function go_finish1() { $('#add_ask_here')['fadeOut']();
         obj['degre_std'] = degrSTD;
         time_ex = obj['time_ex'] = formatAMPM(new Date);
         $('#Takeed')['hide']();
-        state_exam = 'finish'; if (obj['close_Barcode'] == 'auto') { get_ans_data() } else { $('#Tasleem')['show']() } } }
+        state_exam = 'finish'; 
+        
+        try {
+            if (typeof AndroidInterface !== 'undefined' && AndroidInterface.keepScreenOn) {
+                AndroidInterface.keepScreenOn(false);
+            }
+        } catch(e) {}
+        
+        if (obj['close_Barcode'] == 'auto') { 
+            get_ans_data() 
+        } else { 
+            $('#Tasleem')['show']() 
+        } 
+    } 
+}
 
-function get_ans_data() { $('#add_ask_here')['hide']();
+function get_ans_data() { 
+    $('#add_ask_here')['hide']();
     obj['count_Wifi_test'] = studentGashWifi;
     obj['count_OUT_test'] = studentGashOUT;
     obj['count_CAP_test'] = studentGashCAP;
     tafaseel_Student_Data = JSON['stringify'](obj);
     
     if (obj['close_Barcode'] == 'barcode') {
-        Swal.fire({
-            title: 'ادخل الباركود للمصادقة', 
-            input: 'text',
-            showCancelButton: true,
-            confirmButtonText: lan_ok,
-            cancelButtonText: lan_btn_back,
-            inputValidator: (value) => {
-                if (!value) {
-                    return 'يجب إدخال الباركود';
-                }
-                if (value != getBarcode(obj['t_num'])) {
-                    return lan_barcode_incorrect;
-                }
+        try {
+             if (typeof AndroidInterface !== 'undefined' && AndroidInterface.scanBarcode) {
+                 window.barcodeCallback = function(scannedText) {
+                     if (scannedText == getBarcode(obj['t_num'])) {
+                         save_ans();
+                     } else {
+                         Swal['fire']({ type: 'warning', html: lan_barcode_incorrect, confirmButtonText: lan_ok });
+                     }
+                 };
+                 AndroidInterface.scanBarcode('window.barcodeCallback');
+             } else {
+                 Swal.fire({
+                    title: 'ادخل الباركود للمصادقة', 
+                    input: 'text',
+                    showCancelButton: true,
+                    confirmButtonText: lan_ok,
+                    cancelButtonText: lan_btn_back,
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return 'يجب إدخال الباركود';
+                        }
+                        if (value != getBarcode(obj['t_num'])) {
+                            return lan_barcode_incorrect;
+                        }
+                    }
+                }).then((result) => {
+                    if (result.value) {
+                        save_ans();
+                    }
+                });
             }
-        }).then((result) => {
-            if (result.value) {
-                save_ans();
-            }
-        });
+        } catch(e) {
+             Swal.fire({
+                title: 'ادخل الباركود للمصادقة', 
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: lan_ok,
+                cancelButtonText: lan_btn_back,
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'يجب إدخال الباركود';
+                    }
+                    if (value != getBarcode(obj['t_num'])) {
+                        return lan_barcode_incorrect;
+                    }
+                }
+            }).then((result) => {
+                if (result.value) {
+                    save_ans();
+                }
+            });
+        }
     } else { 
         save_ans(); 
     } 
 }
 
-function save_ans() { if (kind_download_for_start_exam == '"direct"') { localStorage['tafaseel_Student_Data'] = tafaseel_Student_Data;
-        localStorage['number_exam'] = number_exam;
-        localStorage['exam_data_for_std'] = exam_data_for_std;
-        localStorage['mode_send_ans'] = 'no';
-        send_ans(tafaseel_Student_Data, number_exam, exam_data_for_std);
-        go_page('prev_exam') } else { var _0x29bex39 = db['transaction'](['myans'], 'readwrite')['objectStore']('myans')['add']({ id: new Date()['getTime'](), tafaseel_Student_Data: tafaseel_Student_Data, allow_show: obj['allow_show'], exam_data: exam_data_for_std, time: time_ex, order: ' ', degree: degrSTD });
-        _0x29bex39['onsuccess'] = function(_0x29bexa) { nav_bottomm = 'show';
-            $('#nav-bottom')['slideDown']();
-            localStorage['router'] = 'prev_exam';
-            setTimeout(function() { location['reload']() }, 1000) };
-        _0x29bex39['onerror'] = function(_0x29bexa) { Swal['fire']({ type: 'warning', html: 'Error', confirmButtonText: lan_ok }) } } }
+function save_ans() { 
+    localStorage['tafaseel_Student_Data'] = tafaseel_Student_Data;
+    localStorage['number_exam'] = number_exam;
+    localStorage['exam_data_for_std'] = exam_data_for_std;
+    localStorage['mode_send_ans'] = 'no';
+    send_ans(tafaseel_Student_Data, number_exam, exam_data_for_std);
+    go_page('prev_exam');
+}
 
 function send_ans(_0x29bex3b, _0x29bex3c, _0x29bex3d) { 
-    // Removed Cordova specific device ID check, using fallback num_device definition from home.js if available, or static '123'
     var num_device_local = typeof num_device !== 'undefined' && num_device !== 0 ? num_device : '123';
     
     tafaseel_Data = _0x29bex3b;
@@ -281,18 +366,47 @@ function send_ans(_0x29bex3b, _0x29bex3c, _0x29bex3d) {
     name_std = obj_save['name_std'];
     info_std = obj_save['info_std'];
     degre_std = obj_save['degre_std'];
-    $['ajax']({ type: 'POST', url: 'https://app-exams.com/new_exam/insert_new_answer.php', data: { num_exam: obj_save['t_num'] + '', answers_data: tafaseel_Data + '', num_device: num_device_local + '', name_std: name_std + '', info_std: info_std + '', degre_std: degre_std + '' }, success: function(_0x29bex7) { localStorage['mode_send_ans'] = 'yes';
-            orderANDdegree = JSON['parse'](_0x29bex7);
-            obj_save['send_ans'] = 'yes';
-            obj_save['answers_id'] = orderANDdegree['answers_id'];
-            x = JSON['stringify'](obj_save);
-            readAll_ans_saveded_new(); if (device_not_support_indexedDB == 'support') { var _0x29bex39 = db['transaction'](['myans'], 'readwrite')['objectStore']('myans')['put']({ id: _0x29bex3c, tafaseel_Student_Data: x, allow_show: obj_save['allow_show'], exam_data: _0x29bex3d, time: time_ex, order: orderANDdegree['order'], degree: degre_std });
-                _0x29bex39['onsuccess'] = function(_0x29bexa) { setTimeout(function() { readAll_ans_saveded() }, 4000) } };
-            setTimeout(function() { Swal['fire']({ type: 'success', title: lan_Answers_sent_successfully, confirmButtonText: lan_ok });
-                $('html, body')['animate']({ scrollTop: $(document)['height']() - $(window)['height']() }) }, 400) }, error: function() { if (localStorage['mode_send_ans'] == 'no') { if (forNotReplay_ans_qed == 0) { forNotReplay_ans_qed++;
-                    Swal['fire']({ html: lan_connect_Internet_to_send, confirmButtonText: lan_ok });
-                    setTimeout(function() { forNotReplay_ans_qed = 0 }, 1000) } else { setTimeout(function() { forNotReplay_ans_qed = 0 }, 1000) } } else { Swal['fire']({ type: 'info', html: lan_Answers_sent_Failed, confirmButtonText: lan_ok });
-                readAll_ans_saveded() } } }) }
+    $['ajax']({ type: 'POST', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/insert_new_answer.php', data: { num_exam: obj_save['t_num'] + '', answers_data: tafaseel_Data + '', num_device: num_device_local + '', name_std: name_std + '', info_std: info_std + '', degre_std: degre_std + '' }, success: function(_0x29bex7) { 
+        localStorage['mode_send_ans'] = 'yes';
+        orderANDdegree = JSON['parse'](_0x29bex7);
+        obj_save['send_ans'] = 'yes';
+        obj_save['answers_id'] = orderANDdegree['answers_id'];
+        x = JSON['stringify'](obj_save);
+
+        if (device_not_support_indexedDB == 'support' && typeof db !== 'undefined') {
+            var storage_id = new Date().getTime(); 
+            db.transaction(['myans'], 'readwrite').objectStore('myans').put({
+                id: storage_id,
+                tafaseel_Student_Data: x,
+                allow_show: obj_save['allow_show'],
+                exam_data: _0x29bex3d,
+                time: time_ex,
+                order: orderANDdegree['order'],
+                degree: orderANDdegree['degree']
+            }).onsuccess = function() {
+                readAll_ans_saveded_new(); 
+            };
+        }
+        
+        setTimeout(function() { 
+            Swal['fire']({ type: 'success', title: lan_Answers_sent_successfully, confirmButtonText: lan_ok });
+            $('html, body')['animate']({ scrollTop: $(document)['height']() - $(window)['height']() }) 
+        }, 400) 
+    }, error: function() { 
+        if (localStorage['mode_send_ans'] == 'no') { 
+            if (forNotReplay_ans_qed == 0) { 
+                forNotReplay_ans_qed++;
+                Swal['fire']({ html: lan_connect_Internet_to_send, confirmButtonText: lan_ok });
+                setTimeout(function() { forNotReplay_ans_qed = 0 }, 1000) 
+            } else { 
+                setTimeout(function() { forNotReplay_ans_qed = 0 }, 1000) 
+            } 
+        } else { 
+            Swal['fire']({ type: 'info', html: lan_Answers_sent_Failed, confirmButtonText: lan_ok });
+            readAll_ans_saveded() 
+        } 
+    } }) 
+}
 
 function update_degree_order(_0x29bex3b, _0x29bex3c, _0x29bex3d) { tafaseel_Data = _0x29bex3b;
     obj_save = JSON['parse'](_0x29bex3b);
@@ -300,7 +414,7 @@ function update_degree_order(_0x29bex3b, _0x29bex3c, _0x29bex3d) { tafaseel_Data
     name_std = obj_save['name_std'];
     info_std = obj_save['info_std'];
     degre_std = obj_save['degre_std'];
-    $['ajax']({ type: 'POST', url: 'https://app-exams.com/new_exam/getOrderAndUpdateDegree.php', data: { num_exam: obj_save['t_num'] + '', answers_id: obj_save['answers_id'] + '' }, success: function(_0x29bex7) { if (_0x29bex7 == null || _0x29bex7 == 'null') { console['log']('هذه النتيجة محذوفة');
+    $['ajax']({ type: 'POST', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/getOrderAndUpdateDegree.php', data: { num_exam: obj_save['t_num'] + '', answers_id: obj_save['answers_id'] + '' }, success: function(_0x29bex7) { if (_0x29bex7 == null || _0x29bex7 == 'null') { console['log']('هذه النتيجة محذوفة');
                 setTimeout(function() { readAll_ans_saveded();
                     setTimeout(function() { Swal['fire']({ type: 'success', text: lan_update_done, showConfirmButton: false, timer: 1800 }) }, 300) }, 300) } else { orderANDdegree = JSON['parse'](_0x29bex7);
                 x = JSON['stringify'](obj_save);
@@ -314,4 +428,3 @@ function remove_ans(_0x29bex40) { _0x29bex40 = _0x29bex40;
 
     function _0x29bex41() { if (device_not_support_indexedDB != 'device_not_support_indexedDB') { var _0x29bex39 = db['transaction'](['myans'], 'readwrite')['objectStore']('myans')['delete'](_0x29bex40);
             _0x29bex39['onsuccess'] = function() { reset_App_tbl() } } else {} } }
-
