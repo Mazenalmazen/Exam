@@ -1,12 +1,12 @@
 function result_exam(_0xea69x2) { numForExcel = _0xea69x2;
     $('#showresult')['html']('<tr><td colspan="6"><img id="img_load_result" src="img/load.gif" /></td></tr>');
-    $['ajax']({ type: 'GET', url: 'https://app-exams.com/new_exam/get_result_exam_new.php?id=' + _0xea69x2, success: function(_0xea69x3) { dataSavePDF = _0xea69x3;
+    $['ajax']({ type: 'GET', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/get_result_exam_new.php?id=' + _0xea69x2, success: function(_0xea69x3) { dataSavePDF = _0xea69x3;
             $('#showresult')['empty']();
             $('#showresult')['append'](_0xea69x3);
-            $('#page_mytest')['clone']()['appendTo']('#copy_page_mytest'); if (+versionExam < 41) { $['ajax']({ type: 'GET', url: 'https://app-exams.com/result_s_num.php?id=' + _0xea69x2, success: function(_0xea69x3) { if (_0xea69x3 != '<tr><td colspan="6">' + lan_No_results_yet + ' !</td></tr>') { $('#showresult')['append'](_0xea69x3) } } }) } }, error: function() { Swal['fire']({ type: 'info', html: lan_There_is_problem_connecting_network, showConfirmButton: false, timer: 1500 }) } }) }
+            $('#page_mytest')['clone']()['appendTo']('#copy_page_mytest'); if (+versionExam < 41) { $['ajax']({ type: 'GET', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/result_s_num.php?id=' + _0xea69x2, success: function(_0xea69x3) { if (_0xea69x3 != '<tr><td colspan="6">' + lan_No_results_yet + ' !</td></tr>') { $('#showresult')['append'](_0xea69x3) } } }) } }, error: function() { Swal['fire']({ type: 'info', html: lan_There_is_problem_connecting_network, showConfirmButton: false, timer: 1500 }) } }) }
 
 function result_exam_one_std(_0xea69x5, _0xea69x6, _0xea69x7) { if (_0xea69x6 == 'demo') { numForExcel = _0xea69x7 };
-    $['ajax']({ type: 'POST', url: 'https://app-exams.com/new_exam/get_result_exam_one_std_2plus.php?id=' + _0xea69x5, data: { num_exam: numForExcel + '', demo_std: _0xea69x6 + '' }, success: function(_0xea69x3) { $('#showresult')['append'](_0xea69x3) }, error: function() { Swal['fire']({ type: 'info', html: lan_There_is_problem_connecting_network, showConfirmButton: false, timer: 1500 }) } }) }
+    $['ajax']({ type: 'POST', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/get_result_exam_one_std_2plus.php?id=' + _0xea69x5, data: { num_exam: numForExcel + '', demo_std: _0xea69x6 + '' }, success: function(_0xea69x3) { $('#showresult')['append'](_0xea69x3) }, error: function() { Swal['fire']({ type: 'info', html: lan_There_is_problem_connecting_network, showConfirmButton: false, timer: 1500 }) } }) }
 
 function backToPrev_page() { go_page(localStorage['prev_page_demo']);
     $('#add_ask_here')['empty']();
@@ -26,7 +26,7 @@ function Correcting_Mqali() { count_Correcting_Mqali++;
     add_script_for_getDegreeAllMqali_loop() }
 
 function add_script_for_getDegreeAllMqali_loop() { $('#add_ask_here')['append'](getDegreeAllMqali); if (obj['count_ask'] > count_Correcting_Mqali) { Correcting_Mqali() } else { tafaseel_Student_Data = JSON['stringify'](std);
-        $['ajax']({ type: 'POST', url: 'https://app-exams.com/new_exam/update_answer.php?id=' + std['answers_id'], data: { answers_data: tafaseel_Student_Data + '', num_exam: numForExcel + '' }, success: function(_0xea69x3) { Swal['fire']({ type: 'success', html: lan_degree_added_student, showConfirmButton: false, timer: 1500 });
+        $['ajax']({ type: 'POST', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/update_answer.php?id=' + std['answers_id'], data: { answers_data: tafaseel_Student_Data + '', num_exam: numForExcel + '' }, success: function(_0xea69x3) { Swal['fire']({ type: 'success', html: lan_degree_added_student, showConfirmButton: false, timer: 1500 });
                 examNum = JSON['parse'](data_exam);
                 result_exam(examNum['t_num']) }, error: function() { Swal['fire']({ type: 'info', html: lan_There_is_problem_connecting_network, showConfirmButton: false, timer: 1500 }) } }) } }
 
@@ -47,7 +47,6 @@ function save_pdf() {
         $('hr')['css']('display', 'none');
         nav_bottomm = 'show'; 
         
-        // Use standard browser print function
         window['print']();
         
     }, 1000);
@@ -60,14 +59,13 @@ function save_pdf_one_std() {
         $('body')['css']('backgroundColor', '#fff');
         $('hr')['css']('display', 'none'); 
 
-        // Use standard browser print function
         window['print']();
         
     }, 1000);
 }
 
 function save_excel() { if (loginState != 'login=OK') { Swal['fire']({ type: 'warning', html: 'Please login first' }) } else { $('#load')['css']('display', 'inline-block');
-        $['ajax']({ type: 'GET', url: 'https://app-exams.com/new_exam/export_excel.php?id=' + numForExcel, success: function(_0xea69x3) { if (_0xea69x3 == 'null' || _0xea69x3 == 'false') { Swal['fire']({ type: 'warning', html: lan_There_is_no_exam_number }) } else { Swal['fire']({ title: lan_please_wait, html: lan_Preparing_file, onBeforeOpen: function _0xea69xf() { Swal['showLoading']() } });
+        $['ajax']({ type: 'GET', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/export_excel.php?id=' + numForExcel, success: function(_0xea69x3) { if (_0xea69x3 == 'null' || _0xea69x3 == 'false') { Swal['fire']({ type: 'warning', html: lan_There_is_no_exam_number }) } else { Swal['fire']({ title: lan_please_wait, html: lan_Preparing_file, onBeforeOpen: function _0xea69xf() { Swal['showLoading']() } });
                     ExportJSON(_0xea69x3) } }, error: function() { Swal['fire']({ type: 'info', html: lan_There_is_problem_connecting_network, showConfirmButton: false, timer: 1500 });
                 $('#load')['css']('display', 'none') } }) } }
 
@@ -87,8 +85,16 @@ function Export(_0xea69x14, _0xea69x3) { $['ajax']({ type: 'POST', url: _0xea69x
             type: 'success', 
             confirmButtonText: lan_word_next 
         })['then'](function() { 
-            // Replace cordova_save_Excel logic with native mailto link
-            document['location']['href'] = 'mailto:' + localStorage['loginEmail'] + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(_0xea69x17) 
+            
+            try {
+                if (typeof AndroidInterface !== 'undefined' && AndroidInterface.shareFile) {
+                    AndroidInterface.shareFile(_0xea69x17);
+                } else {
+                    document['location']['href'] = 'mailto:' + localStorage['loginEmail'] + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(_0xea69x17);
+                }
+            } catch(e) {
+                 document['location']['href'] = 'mailto:' + localStorage['loginEmail'] + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(_0xea69x17);
+            }
         }) 
     })['fail'](function(_0xea69x15) { 
         $('#load')['css']('display', 'none');
@@ -96,12 +102,10 @@ function Export(_0xea69x14, _0xea69x3) { $['ajax']({ type: 'POST', url: _0xea69x
     }) 
 }
 
-// Removed function cordova_save_Excel()
-
 function delete_result(_0xea69x1a, _0xea69x1b) { if (_0xea69x1a == 'deleteExam') { _0xea69x1b = _0xea69x1b;
         msg_delete = lan_msg_delete_examAndRes } else { _0xea69x1a = 'ansONLY';
         _0xea69x1b = numForExcel;
         msg_delete = lan_msg_delete_resultOnly };
     ss = _0xea69x1b;
-    Swal['fire']({ title: lan_You_about_delete, html: msg_delete, type: 'warning', showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#3085d6', confirmButtonText: lan_word_delete, cancelButtonText: lan_Undo })['then'](function(_0xea69x16) { if (_0xea69x16['value']) { $['ajax']({ type: 'POST', url: 'https://app-exams.com/new_exam/delete_exam_ans.php', data: { deleteExam: _0xea69x1a + '', num_deleteExam: _0xea69x1b + '' }, success: function(_0xea69x3) { if (_0xea69x3 == 'done_exam and ans') { readAll_exam_saveded_new();
+    Swal['fire']({ title: lan_You_about_delete, html: msg_delete, type: 'warning', showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#3085d6', confirmButtonText: lan_word_delete, cancelButtonText: lan_Undo })['then'](function(_0xea69x16) { if (_0xea69x16['value']) { $['ajax']({ type: 'POST', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/delete_exam_ans.php', data: { deleteExam: _0xea69x1a + '', num_deleteExam: _0xea69x1b + '' }, success: function(_0xea69x3) { if (_0xea69x3 == 'done_exam and ans') { readAll_exam_saveded_new();
                         Swal['fire']({ type: 'success', html: lan_msg_success_exam_deleted, showConfirmButton: false, timer: 1500 }) } else { if (_0xea69x3 == 'done_ans') { Swal['fire']({ type: 'success', html: lan_msg_success_exam_deleted, showConfirmButton: false, timer: 2000 }) } }; if (_0xea69x1a == 'deleteExam') { remove_exam_te(_0xea69x1b, 'deleteExam') } else { result_exam(numForExcel) } }, error: function() { Swal['fire']({ type: 'info', html: lan_There_is_problem_connecting_network, showConfirmButton: false, timer: 1500 }) } }) } }) }
