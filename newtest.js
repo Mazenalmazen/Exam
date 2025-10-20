@@ -47,7 +47,7 @@ $('#input_Time')['fadeOut']();
 function readAll_exam_saveded_new(_0x961fxd) { loginState_te = localStorage['loginState']; if (loginState_te == 'login=OK') { loginEmail_te = localStorage['loginEmail'];
         $('#exam_saved_forAdd')['empty']();
         $('#exam_saved_forAdd')['append']('<tr id="tr_load"><td colspan="3"><img id="load_login" style="display: block;" src="img/load.gif" /></td></tr>');
-        $['ajax']({ type: 'POST', url: 'https://app-exams.com/new_exam/get_result_exam_one_std555.php', data: { email: loginEmail_te + '' }, success: function(_0x961fxe) { if (_0x961fxe == '') { $('#exam_saved_forAdd')['empty']();
+        $['ajax']({ type: 'POST', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/get_result_exam_one_std555.php', data: { email: loginEmail_te + '' }, success: function(_0x961fxe) { if (_0x961fxe == '') { $('#exam_saved_forAdd')['empty']();
                     $('#exam_saved_forAdd')['append']('<tr><td id="lan_No_exam_yet" colspan="3">لم تقم بإنشاء أي اختبار حتى الآن</td></tr>');
                     $('#lan_No_exam_yet')['html'](lan_No_exam_yet) } else { $('#exam_saved_forAdd')['empty']();
                     $('#exam_saved_forAdd')['append'](_0x961fxe);
@@ -91,13 +91,13 @@ function add_ask() { count_ask = count_ask + 1;
         'const file = fileObjAsk' + count_ask + '; ' +
         'const formData = new FormData(); ' +
         'formData.append(\'file\', file, file.name); ' +
-        'fetch(\'https://app-exams.com/new_exam/upload.php\', { ' +
+        'fetch(\'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/upload.php\', { ' +
             'method: \'POST\', ' +
             'body: formData ' +
         '}) ' +
         '.then(response => response.text()) ' +
         '.then(result => { ' +
-            'img_val_ASK' + count_ask + ' = \'https://app-exams.com/new_exam/uploadIMG/\' + result.trim(); ' +
+            'img_val_ASK' + count_ask + ' = \'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/uploadIMG/\' + result.trim(); ' +
             '$(\'#load\').css(\'display\', \'none\'); ' +
         '}) ' +
         '.catch(error => { ' +
@@ -224,13 +224,13 @@ function get_ask_data() { if (count_ask == 0) { Swal['fire']({ text: 'يجب إ�
         res_ask_exam = res_ask_exam + '}';
         insert_new_exam() } }
 
-function insert_new_exam(_0x961fx31, _0x961fx32, _0x961fx33) { $('#load')['css']('display', 'inline-block'); if (_0x961fx32 == 'yes') { url_mode = 'https://app-exams.com/new_exam/update_exam2.php?id=' + _0x961fx33;
+function insert_new_exam(_0x961fx31, _0x961fx32, _0x961fx33) { $('#load')['css']('display', 'inline-block'); if (_0x961fx32 == 'yes') { url_mode = 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/update_exam2.php?id=' + _0x961fx33;
         obbbj = JSON['parse'](_0x961fx31);
         t_name = obbbj['t_name'];
         t_info = obbbj['t_info'];
         t_email = obbbj['t_email'];
-        res_ask_exam = _0x961fx31 } else { if (moodeIs == 'mode_edit') { url_mode = 'https://app-exams.com/new_exam/update_exam2.php?id=' + numExamEdit;
-            msg_mode = lan_edited_successfully } else { url_mode = 'https://app-exams.com/new_exam/insert_new_exam2.php';
+        res_ask_exam = _0x961fx31 } else { if (moodeIs == 'mode_edit') { url_mode = 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/update_exam2.php?id=' + numExamEdit;
+            msg_mode = lan_edited_successfully } else { url_mode = 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/insert_new_exam2.php';
             msg_mode = lan_added_successfully } };
     $['ajax']({ type: 'POST', url: url_mode, data: { exam_name: t_name + '', exam_info: t_info + '', exam_email: t_email + '', exam_data: res_ask_exam + '' }, success: function(_0x961fxe) { if (_0x961fx32 == 'yes') { $('#load')['css']('display', 'none') } else { $('html, body')['animate']({ scrollTop: '0px' }, 10);
                 Swal['fire']({ type: 'success', text: msg_mode, showConfirmButton: false, timer: 3000 });
@@ -286,7 +286,7 @@ $('.popup_login .inner')['click'](function(_0x961fx40) { _0x961fx40['stopPropaga
 
 function login(_0x961fx42, _0x961fx43) { _0x961fx42 = _0x961fx42['toLowerCase']();
     $('.popup_login')['fadeOut'](200); if (_0x961fx42 == '' || _0x961fx43 == '') { Swal['fire']({ html: lan_fill_input, confirmButtonText: lan_ok }) } else { if (_0x961fx42['indexOf']('@') >= 0 && _0x961fx42['indexOf']('.') >= 0) { $('#load_login')['css']('display', 'block');
-            $['ajax']({ type: 'POST', url: 'https://app-exams.com/new_exam/insert_new_user_plus.php', data: { email: _0x961fx42 + '', pass: _0x961fx43 + '', te_std: 'te' }, success: function(_0x961fxe) { if (_0x961fxe == 'no') { Swal['fire']({ type: 'warning', title: lan_pass_wrong1, html: lan_pass_wrong2, confirmButtonText: lan_ok });
+            $['ajax']({ type: 'POST', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/insert_new_user_plus.php', data: { email: _0x961fx42 + '', pass: _0x961fx43 + '', te_std: 'te' }, success: function(_0x961fxe) { if (_0x961fxe == 'no') { Swal['fire']({ type: 'warning', title: lan_pass_wrong1, html: lan_pass_wrong2, confirmButtonText: lan_ok });
                         $('#load_login')['hide']() } else { if (_0x961fxe == 'yes') { Swal['fire']({ type: 'success', html: lan_new_user_done, confirmButtonText: lan_ok });
                             $('.popup_login')['fadeOut'](200);
                             loginState = localStorage['loginState'] = 'login=OK';
@@ -305,7 +305,7 @@ function login(_0x961fx42, _0x961fx43) { _0x961fx42 = _0x961fx42['toLowerCase'](
 function check_logen_for_get_exam() { if (loginState == 'login=OK') { $('.popup_get_prev_exam')['fadeIn'](200) } else { Swal['fire']({ type: 'info', html: 'الرجاء تسجيل الدخول أولا ثم إعادة المحاولة لجلب اختباراتك السابقة', confirmButtonText: lan_ok }) } } $('.popup_get_prev_exam')['click'](function() { $('.popup_get_prev_exam')['fadeOut'](200) });
 $('.popup_get_prev_exam .inner')['click'](function(_0x961fx40) { _0x961fx40['stopPropagation']() });
 
-function get_prev_exam(_0x961fxb, _0x961fx43, _0x961fx42, _0x961fx46) { if (_0x961fxb == '' || _0x961fx43 == '') { Swal['fire']({ type: 'warning', html: 'يرجى ملء الحقول', confirmButtonText: lan_ok }) } else { $['ajax']({ type: 'POST', url: 'https://app-exams.com/new_exam/get_prev_exam.php?id=' + _0x961fxb, data: { num: _0x961fxb + '', pass: _0x961fx43 + '', email: _0x961fx42 + '' }, success: function(_0x961fxe) { if (_0x961fxe == 'noResult') { Swal['fire']({ type: 'warning', html: 'عفوا لا يوجد اختبار بهذا الرقم', confirmButtonText: lan_ok }) } else { if (_0x961fxe == 'no') { Swal['fire']({ type: 'warning', html: 'يرجى التأكد من رقم الاختبار وكلمة المرور', confirmButtonText: lan_ok }) } else { if (_0x961fx46 == 'forUpdate') { search_exam() } else { $('.popup_get_prev_exam')['fadeOut'](200);
+function get_prev_exam(_0x961fxb, _0x961fx43, _0x961fx42, _0x961fx46) { if (_0x961fxb == '' || _0x961fx43 == '') { Swal['fire']({ type: 'warning', html: 'يرجى ملء الحقول', confirmButtonText: lan_ok }) } else { $['ajax']({ type: 'POST', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/get_prev_exam.php?id=' + _0x961fxb, data: { num: _0x961fxb + '', pass: _0x961fx43 + '', email: _0x961fx42 + '' }, success: function(_0x961fxe) { if (_0x961fxe == 'noResult') { Swal['fire']({ type: 'warning', html: 'عفوا لا يوجد اختبار بهذا الرقم', confirmButtonText: lan_ok }) } else { if (_0x961fxe == 'no') { Swal['fire']({ type: 'warning', html: 'يرجى التأكد من رقم الاختبار وكلمة المرور', confirmButtonText: lan_ok }) } else { if (_0x961fx46 == 'forUpdate') { search_exam() } else { $('.popup_get_prev_exam')['fadeOut'](200);
                             Swal['fire']({ type: 'success', text: 'تمت استعادة الاختبار بنجاح', showConfirmButton: false, timer: 1500 });
                             save_exam(' ', _0x961fxe, _0x961fxb, 'prev') } } } }, error: function() { Swal['fire']({ type: 'info', html: lan_There_is_problem_connecting_network, showConfirmButton: false, timer: 1500 }) } }) } }
 
@@ -332,7 +332,7 @@ function strip2_tags(_0x961fxe) { var _0x961fx4d = document['createElement']('di
 
 function copyText1(_0x961fxb) { $('#copy_url_input')['css']('color', color_app);
     el_copy = _0x961fxb;
-    $('#copy_url_input')['html']('https://app-exams.com/exam.html#' + _0x961fxb);
+    $('#copy_url_input')['html']('https://a0fxv8h5a8g0-deploy.space.z.ai/exam.html#' + _0x961fxb);
     el = document['getElementById']('copy_url_input');
     copyText(el) }
 
@@ -343,7 +343,7 @@ function copyText(_0x961fx51) { var _0x961fx52, _0x961fx53, _0x961fx54; if (docu
             _0x961fx52['selectNodeContents'](_0x961fx51);
             _0x961fx53['removeAllRanges']();
             _0x961fx53['addRange'](_0x961fx52) } }; try { document['execCommand']('copy');
-        link_exam = 'https://app-exams.com/exam.html#' + el_copy;
+        link_exam = 'https://a0fxv8h5a8g0-deploy.space.z.ai/exam.html#' + el_copy;
         Swal['fire']({ type: 'success', title: lan_word_Great, html: lan_exam_ready_download_link + ': <br> <a href=' + link_exam + '>' + link_exam + '</a>', confirmButtonText: lan_Copy_link }) } catch (err) { Swal['fire']({ type: 'success', html: lan_exam_ready_download_link + ': <br> <a href=' + link_exam + '>' + link_exam + '</a>', confirmButtonText: lan_ok }) } }
 
 function update_exam_te_new() { if (loginState == 'login=OK') { $('#email_te')['val'](localStorage['loginEmail']);
