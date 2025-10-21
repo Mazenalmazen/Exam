@@ -37,6 +37,8 @@
             border-bottom: 2px solid #3498db;
             display: inline-block;
         }
+        /* إخفاء السبلاش بشكل فوري */
+        #splash { display: none !important; }
     </style>
     
     <script src="jquery-3.1.1.min.js"></script>
@@ -65,10 +67,6 @@
             app_lan = 'no'; foo_app_lan_ar();
         }
     </script>
-    <style>
-        /* إخفاء السبلاش بشكل فوري لكونه موقع ويب */
-        #splash { display: none !important; }
-    </style>
 </head>
 
 <body lang="ar">
@@ -80,18 +78,7 @@
             </div>
         </div>
         <script>
-            // تم تحييد كود السبلاش لأنه تم إخفاؤه بـ CSS
-            // heightSplash = $(window).height() / 2 - 90;
-            // heightSplash2 = heightSplash + 'px auto';
-            // $('#imgSplash').parent().css('margin',heightSplash2);
-            // $('#splash img').fadeIn(200);
-            // $('#splash h2').fadeIn(200);
-            // setTimeout (function() {
-            //     $('#splash').fadeOut(400);
-            // }, 0); // تم تسريعه إلى 0 لضمان الاختفاء الفوري
-
-        </script>
-        <script>
+            // كود السبلاش تم تحييده / إزالته
             color_app = localStorage["color_app"];
             if (color_app != null && color_app != 'null' && color_app != 'undefined' && color_app != ' ' && color_app != undefined){
                 $('body').css('background', color_app);
@@ -275,12 +262,10 @@
             <!-- بداية الصفحة الثالثة إنشاء اختبار جديد -->
             <div id="page_newtest" class="Dnone">
                 <br>
-                <!-- إضافة Dnone هنا لإخفاء النص الذي يظهر في الصورة -->
+                <!-- إضافة Dnone لإخفاء نص الخيارات كما طلب المستخدم -->
                 <p id="lan_options_add_exam" class="Dnone" style='margin: auto; width: 85%;'>
                     عزيزي المعلم<br>
                     لديك العديد من الخيارات لإضافة أسئلة اختبارك<br><br>
-                    <!-- تم إخفاء هذا الجزء في JS -->
-                    <!-- من التطبيق أو تصميم الاختبار من الموقع الخاص بالاختبارات بخصائص اضافية منها تصميمنموذج الأسئلة عبر ملف اكسل .من موقع الاختبارات الالكترونية  <span onClick='info_how_add_ask()' style='color:#3498db; cursor:pointer;'>(لماذا؟) <i class="far fa-hand-pointer"></i></span><br> -->
                 </p>
                 <button class="desine-btn sett" onclick="openExternalLink('https://app-exams.com/new')" id="lan_website_link">
                     <i class="fas fa-globe"></i><span id="lan_website_btn_text1">موقع الاختبارات الالكترونية </span>
@@ -857,8 +842,8 @@
     <script src="script.js"></script>
     <script src="cc5.js"></script>
     <script src="goTo_pages.js"></script>
-    <script src="home.js"></script>
     <script src="mytest.js"></script>
+    <script src="home.js"></script>
     <script src="newtest.js"></script>
     <script src="editExam.js"></script>
     <script src="page_result.js"></script>
