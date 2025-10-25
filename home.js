@@ -8,15 +8,12 @@ var no_no = '"no"';
 var kind_me = 'webview';
 var num_device = 'uuid: 123456'; 
 
-// تعريف الدوال المساعدة أولا
-function formatAMPM(_0x9f58x2c) { var _0x9f58x2d = _0x9f58x2c['getDate'](); var _0x9f58x2e = _0x9f58x2c['getMonth']() + 1; var _0x9f58x2f = _0x9f58x2c['getFullYear'](); var _0x9f58x30 = _0x9f58x2c['getHours'](); var _0x9f58x31 = _0x9f58x2c['getMinutes'](); var _0x9f58x32 = _0x9f58x30 >= 12 ? 'pm' : 'am';
-    _0x9f58x30 = _0x9f58x30 % 12;
-    _0x9f58x30 = _0x9f58x30 ? _0x9f58x30 : 12;
-    _0x9f58x31 = _0x9f58x31 < 10 ? '0' + _0x9f58x31 : _0x9f58x31; var _0x9f58x33 = _0x9f58x2d + '/' + _0x9f58x2e + '/' + _0x9f58x2f + ' ' + _0x9f58x30 + ':' + _0x9f58x31 + ' ' + _0x9f58x32; return _0x9f58x33 }
+function send_saved_direct() { localStorage_tafaseel_Student_Data = localStorage['tafaseel_Student_Data'];
+    localStorage_number_exam = localStorage['number_exam'];
+    localStorage_exam_data_for_std = localStorage['exam_data_for_std']; if (localStorage['mode_send_ans'] == 'no') { $('#exam_saved_st table thead td:first')['html']('<p onclick="send_ans(localStorage_tafaseel_Student_Data, localStorage_number_exam, localStorage_exam_data_for_std)" style="float: right; margin-right: 5px; margin-left: -70px; font-size: 14px; margin-top: 2px; margin-bottom: 0px;">' + lan_SendExam_tbl_std + '</p><span>' + lan_My_Exams_For_Student + '</span>');
+        go_page('prev_exam');
+        send_ans(localStorage['tafaseel_Student_Data'], localStorage['number_exam'], localStorage['exam_data_for_std']) } } setTimeout(function() { send_saved_direct() }, 3500);
 
-function parseArabic(_0x9f58x35) { return Number(_0x9f58x35['replace'](/[٠١٢٣٤٥٦٧٨٩]/g, function(_0x9f58x36) { return _0x9f58x36['charCodeAt'](0) - 1632 })['replace'](/[۰۱۲۳۴۵۶۷۸۹]/g, function(_0x9f58x36) { return _0x9f58x36['charCodeAt'](0) - 1776 })) }
-
-// تعريف IndexedDB (يجب أن يتم تحميله وتفعيله قبل أي استخدام)
 window['indexedDB'] = window['indexedDB'] || window['mozIndexedDB'] || window['webkitIndexedDB'] || window['msIndexedDB'] || window['shimIndexedDB'];
 window['IDBTransaction'] = window['IDBTransaction'] || window['webkitIDBTransaction'] || window['msIDBTransaction'];
 window['IDBKeyRange'] = window['IDBKeyRange'] || window['webkitIDBKeyRange'] || window['msIDBKeyRange'];
@@ -37,8 +34,9 @@ if (!window['indexedDB']) {
         var _0x9f58x13 = db['createObjectStore']('myexam', { keyPath: 'id' }); 
         var _0x9f58x14 = db['createObjectStore']('blobs', { keyPath: 'id' }) 
     } 
-}
+};
 
+// محاولة الحصول على المعرف عبر واجهة JSI إذا كانت متوفرة
 try {
     if (typeof AndroidInterface !== 'undefined' && AndroidInterface.getDeviceId) {
         num_device = 'uuid: ' + AndroidInterface.getDeviceId();
@@ -47,11 +45,6 @@ try {
     console.log("JSI interface not fully available or device ID not retrieved.");
 }
 
-function send_saved_direct() { localStorage_tafaseel_Student_Data = localStorage['tafaseel_Student_Data'];
-    localStorage_number_exam = localStorage['number_exam'];
-    localStorage_exam_data_for_std = localStorage['exam_data_for_std']; if (localStorage['mode_send_ans'] == 'no') { $('#exam_saved_st table thead td:first')['html']('<p onclick="send_ans(localStorage_tafaseel_Student_Data, localStorage_number_exam, localStorage_exam_data_for_std)" style="float: right; margin-right: 5px; margin-left: -70px; font-size: 14px; margin-top: 2px; margin-bottom: 0px;">' + lan_SendExam_tbl_std + '</p><span>' + lan_My_Exams_For_Student + '</span>');
-        go_page('prev_exam');
-        send_ans(localStorage['tafaseel_Student_Data'], localStorage['number_exam'], localStorage['exam_data_for_std']) } } setTimeout(function() { send_saved_direct() }, 3500);
 
 function alertDismissed() {} 
 setTimeout(function() { readAll_exam_saveded_new() }, 1000);
@@ -70,29 +63,11 @@ function downloadExam_new() { if (myObj['kind_download'] == 'indexedDB') { if (d
         show_search();
         $('#load')['css']('display', 'none') } }
 
-function readAll() { 
-    $('#exam_loaded_forAdd')['empty'](); 
-    if (typeof db === 'undefined' || device_not_support_indexedDB !== 'support') {
-        $('#exam_loaded_forAdd')['append']('<td colspan=\'5\'>' + lan_You_have_not_downloaded_any_exam_yet + '</td>');
-        return;
-    }
-    
-    var _0x9f58x11 = db['transaction']('myTestLoaded')['objectStore']('myTestLoaded');
-    _0x9f58x11['openCursor']()['onsuccess'] = function(_0x9f58x10) { 
-        var _0x9f58x19 = _0x9f58x10['target']['result']; 
-        if (_0x9f58x19) { 
-            cursorValueExam_data = '' + _0x9f58x19['value']['exam_data'] + '';
+function readAll() { $('#exam_loaded_forAdd')['empty'](); var _0x9f58x11 = db['transaction']('myTestLoaded')['objectStore']('myTestLoaded');
+    _0x9f58x11['openCursor']()['onsuccess'] = function(_0x9f58x10) { var _0x9f58x19 = _0x9f58x10['target']['result']; if (_0x9f58x19) { cursorValueExam_data = '' + _0x9f58x19['value']['exam_data'] + '';
             $('#exam_loaded_forAdd')['append']('' + '<tr><td width=\'50%\' onclick=\'start_exam(' + _0x9f58x19['key'] + ',' + cursorValueExam_data + ' )\'>' + _0x9f58x19['value']['exam_name'] + '<br>' + lan_word_start + ' <i class=\'fas fa-sign-in-alt gre animated infinite wobble\'></i>' + '</td><td style=\'padding: 5px;\'>' + _0x9f58x19['key'] + '</td><td width=\'50%\' onclick=\'remove_exam(' + +_0x9f58x19['key'] + ')\'>' + _0x9f58x19['value']['exam_info'] + '<br>' + lan_word_delete + ' <i class=\'fas fa-minus-circle rem\'></i>' + '</td></tr>');
             isHereExamLoaded = 'yes';
-            _0x9f58x19['continue']() 
-        } else { 
-            if (isHereExamLoaded != 'yes') { 
-                $('#exam_loaded_forAdd')['append']('<td colspan=\'5\'>' + lan_You_have_not_downloaded_any_exam_yet + '</td>') 
-            } 
-        } 
-    } 
-}
-
+            _0x9f58x19['continue']() } else { if (isHereExamLoaded != 'yes') { $('#exam_loaded_forAdd')['append']('<td colspan=\'5\'>' + lan_You_have_not_downloaded_any_exam_yet + '</td>') } } } }
 var one_blob = {};
 slove = '<script> add_script_blob_loop(); </' + 'script> ';
 
@@ -142,11 +117,12 @@ var fast_lan;
 var chaneg_lan;
 
 function check_mode_app_lan(_0x9f58x26) { 
+    // التعديل: إذا لم يتم تحديد اللغة بعد (app_lan == 'no')، يتم فرض العربية وتخطي شاشة اختيار اللغة
     if (_0x9f58x26 == undefined || _0x9f58x26 == 'undefined' || _0x9f58x26 == 'no') { 
-        app_lan = localStorage['app_lan'] = 'ar'; 
+        app_lan = localStorage['app_lan'] = 'ar'; // فرض العربية
         foo_app_lan_ar();
-        $('.start_mode_app_lan')['hide'](); 
-        check_mode(mode_te_st); 
+        $('.start_mode_app_lan')['hide'](); // إخفاء شاشة اختيار اللغة
+        check_mode(mode_te_st); // الانتقال مباشرة إلى شاشة اختيار الدور
     } else { 
         foo_app_lan_ar(); 
         if (fast_lan != 'new') { 
@@ -188,23 +164,14 @@ function onOffline() { networkState = 0; if (forNotReplay_qed == 0) { forNotRepl
 function onOnline() { networkState = 1; if (forNotReplay_send == 0) { forNotReplay_send++;
         send_saved_direct(); if (device_not_support_indexedDB == 'support') { readAll_ans_saveded() } } else { setTimeout(function() { forNotReplay_send = 0 }, 1500) } }
 
-function getStatistics() { $['ajax']({ type: 'POST', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/getStatistics.php', success: function(_0x9f58x3b) { Statistics = JSON['parse'](_0x9f58x3b);
+function getStatistics() { $['ajax']({ type: 'POST', url: 'https://app-exams.com/new_exam/getStatistics.php', success: function(_0x9f58x3b) { Statistics = JSON['parse'](_0x9f58x3b);
             $('#num_All_use')['html'](Statistics.Ads);
             $('#num_All_test')['html'](Statistics.Exams);
             $('#num_All_ِAns')['html'](Statistics.Answers);
             $('#statistics .fa-spinner')['css']('display', 'none') }, error: function() { Swal['fire']({ type: 'info', html: lan_There_is_problem_connecting_network, showConfirmButton: false, timer: 1500 }) } }) } $(document)['ready'](function() { $('*')['on']('click', function(_0x9f58x3c) { $('body')['css']('backgroundColor', color_app); if (nav_bottomm != 'hide') { if (_0x9f58x3c['target']['tagName'] != 'INPUT' && _0x9f58x3c['target']['tagName'] != 'TEXTAREA') { $('#nav-bottom')['slideDown']() } else { $('#nav-bottom')['slideUp']() } } else { $('#nav-bottom')['slideUp']() } });
     $(document)['on']('click', 'input[type=\'text\']', function() { $(this)['focus']() });
     $(document)['on']('click', 'textarea', function() { $(this)['focus']() });
-    $(document)['on']('click', 'input[type=\'number\']', function() { $(this)['focus']() });
-    
-    // تأخير قراءة IndexedDB حتى بعد تحميل DOM بالكامل
-    if (typeof db !== 'undefined' && db) {
-        setTimeout(function() { 
-            readAll();
-            readAll_exam_saveded();
-        }, 1000);
-    }
-});
+    $(document)['on']('click', 'input[type=\'number\']', function() { $(this)['focus']() }) });
 
 function getBarcode(_0x9f58x3e) { barcode = '84193' + +_0x9f58x3e * 124 + '306145' + +_0x9f58x3e * 16; return barcode }
 

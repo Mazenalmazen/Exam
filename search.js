@@ -1,5 +1,5 @@
 function search_exam() { num = $('#num_exam')['val'](); if (num != '') { $('#load')['css']('display', 'inline-block');
-        $['ajax']({ type: 'GET', url: 'https://a0fxv8h5a8g0-deploy.space.z.ai/new_exam/get_exam_data2.php?id=' + parseArabic(num), success: function(_0x5ab8x2) { obj = JSON['parse'](_0x5ab8x2); if (obj['exam_data'] == false || obj['exam_data'] == 'false') { Swal['fire']({ type: 'info', html: lan_There_is_no_exam_number, confirmButtonText: lan_ok });
+        $['ajax']({ type: 'GET', url: 'https://app-exams.com/new_exam/get_exam_data2.php?id=' + parseArabic(num), success: function(_0x5ab8x2) { obj = JSON['parse'](_0x5ab8x2); if (obj['exam_data'] == false || obj['exam_data'] == 'false') { Swal['fire']({ type: 'info', html: lan_There_is_no_exam_number, confirmButtonText: lan_ok });
                     $('#load')['css']('display', 'none') } else { if (obj['exam_name'] == '' && obj['exam_info'] == '' && obj['exam_email'] == '' && obj['exam_data'] == '') { get_prev_exam(num, obj['t_pass'], 'notYut', 'forUpdate') } else { exam_name = document['getElementById']('showName')['innerHTML'] = obj['exam_name'];
                         exam_info = document['getElementById']('showNobza')['innerHTML'] = obj['exam_info'];
                         exam_data = obj['exam_data'];
