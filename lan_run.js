@@ -5,8 +5,8 @@ function lan_run() {
 	$('#lan_fev_use').html(lan_fev_use);
 	$('#lan_word_student').html(lan_word_student);
 	$('#lan_word_teacher').html(lan_word_teacher);
-	$('#lan_word_ar').html('العربية');
-	$('#lan_lan_page').html('<i class="fas fa-language"></i>اللغة - Language');
+	$('#lan_word_ar').html('العربية'); // فقط العربية لأنها ما تظهر
+	$('#lan_lan_page').html('<i class="fas fa-language"></i>اللغة - Language'); // فقط العربية لأنها ما تظهر
 	$('#lan_search_the_exam_number').html(lan_search_the_exam_number);
 	$('#lan_btn_search_the_exam').html(lan_btn_search_the_exam);
 	$('#num_exam').attr("placeholder", lan_pl_Enter_the_exam_number);
@@ -30,12 +30,13 @@ function lan_run() {
 	$('#lan_More_Exam_tbl_te').html(lan_More_Exam_tbl_te);
 
 	$('#lan_My_Exams_For_Student span').html(lan_My_Exams_For_Student);
-	$('#lan_Number_Exam_tbl_std').html(lan_Degree);
-	$('#lan_More_Exam_tbl_std').html(lan_More_Exam_tbl_te);
+	$('#lan_Name_Exam_tbl_std').html(lan_Name_Exam_tbl_te); // هنا مأخوذة من قائمة المعلم
+	$('#lan_Number_Exam_tbl_std').html(lan_Degree); // هنا مأخوذة من الكلمات العامة
+	$('#lan_More_Exam_tbl_std').html(lan_More_Exam_tbl_te); // هنا مأخوذة من قائمة المعلم
 
 	$('#lan_num_exam').html(lan_num_exam);
-	$('#lan_showName2').html(lan_showName);
-	$('#lan_showNobza2').html(lan_showNobza);
+	$('#lan_showName2').html(lan_showName); // هنا مأخوذة من الصفحة الرئيسية
+	$('#lan_showNobza2').html(lan_showNobza); // هنا مأخوذة من الصفحة الرئيسية
 	$('#lan_name_std').html(lan_name_std);
 	$('#lan_num_std').html(lan_num_std);
 	$('#lan_info_std').html(lan_info_std);
@@ -109,7 +110,7 @@ function lan_run() {
 	$('#lan_save_pdf').html(lan_save_pdf);
 	$('#lan_delete_result').html(lan_delete_result);
 
-	$('.lan_back_btn').html(lan_btn_back);
+	$('.lan_back_btn').html(lan_btn_back); // لأزرار الرجوع
 	$('#lan_about_app').html(lan_about_app);
 	$('#lan_about').html(lan_about);
 	$('#lan_how_to_use_ved_te').html(lan_how_to_use_ved_te);
@@ -127,8 +128,8 @@ function lan_run() {
 	$('#lan_star_app2').html(lan_star_app2);
 	$('#lan_star_app3').html(lan_star_app3);
 	$('#lan_star_app4').html(lan_star_app4);
-	$('#how_to_use li').css('direction', lan_step_ul_li);
-	$('#how_to_use li').css('text-align', lan_step_ul_li2);
+	$('#how_to_use li').css('direction', lan_step_ul_li); // لتغيير اتجاه الكتابة في ul li
+	$('#how_to_use li').css('text-align', lan_step_ul_li2); // لتغيير اتجاه الكتابة في ul li
 
 	$('#lan_lern_pi').html(lan_lern_pi);
 	$('#lan_lern_pi1').html(lan_lern_pi1);
@@ -177,7 +178,7 @@ function lan_run() {
 	$('#lan_Frequently_asked_btn6').html(lan_Frequently_asked_btn6);
 	$('#lan_Frequently_asked_btn7').html(lan_Frequently_asked_btn7);
 
-	$('#Frequently_asked button').css('direction', lan_step_ul_li);
+	$('#Frequently_asked button').css('direction', lan_step_ul_li); // لتغيير اتجاه الكتابة في الأسئلة المتكررة
 
 	$('#lan_One_account').html(lan_One_account);
 	$('#lan_account_email').html(lan_account_email);
@@ -202,22 +203,3 @@ function lan_run() {
 	
 	$('#lan_Available_on_p').html(lan_Available_on_p);
 	
-	
-	
-	
-	// ## Removed security check block (Lines 223-233 in original file) ##
-
-
-}
-
-// ===== خليها هنا في الأخير عشانها ما تشتغل في الأيباد وتوقف البرنامج
-
-// Simplified device detection for a generic web environment
-if (window.navigator.userAgent.match(/iPad|iPhone|iPod/i)) {
-	deviceManufacturer = "Apple";
-} else if (window.navigator.userAgent.match(/Android/i)) {
-	deviceManufacturer = "Android";
-} else {
-	deviceManufacturer = "no";
-}
-
